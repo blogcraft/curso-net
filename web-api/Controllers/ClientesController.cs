@@ -29,7 +29,15 @@ namespace web_api.Controllers
         }
 
         [HttpDelete]
-        public void BorrarCliente() { }
+        public ActionResult BorrarCliente()
+        {
+            // validar y guardar en BD
+            bool ocurrioAlgoMalo = false;
+
+            if (ocurrioAlgoMalo)
+                return BadRequest();
+            return NoContent();
+        }
 
     }
 }
