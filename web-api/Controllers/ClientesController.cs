@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace web_api.Controllers
 {
@@ -7,10 +8,13 @@ namespace web_api.Controllers
     public class ClientesController : ControllerBase
     {
         [HttpGet]
-        public string[] ObtenerClientes()
+        public ActionResult ObtenerClientes()
         {
             string[] clientes = { "Juan", "Pepe", "Ana", "Francisca" };
-            return clientes;
+
+            if (!clientes.Any())
+                return NotFound();
+            return Ok(clientes);
         }
 
         [HttpPost]
