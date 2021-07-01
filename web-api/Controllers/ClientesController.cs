@@ -18,7 +18,15 @@ namespace web_api.Controllers
         }
 
         [HttpPost]
-        public void CrearCliente() { }
+        public ActionResult CrearCliente(string nombre)
+        {
+            // validar y guardar en BD
+            bool ocurrioAlgoMalo = false;
+
+            if (ocurrioAlgoMalo)
+                return BadRequest();
+            return Created("", nombre);
+        }
 
         [HttpDelete]
         public void BorrarCliente() { }
