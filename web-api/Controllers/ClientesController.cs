@@ -8,17 +8,17 @@ namespace web_api.Controllers
     public class ClientesController : ControllerBase
     {
         [HttpGet]
-        public ActionResult ObtenerClientes()
+        public ActionResult ObtenerClientes([FromQuery] int limite)
         {
             string[] clientes = { "Juan", "Pepe", "Ana", "Francisca" };
 
             if (!clientes.Any())
                 return NotFound();
-            return Ok(clientes);
+            return Ok(clientes.Take((int)limite));
         }
 
         [HttpPost]
-        public ActionResult CrearCliente(string nombre)
+        public ActionResult CrearCliente([FromBody] string nombre)
         {
             // validar y guardar en BD
             bool ocurrioAlgoMalo = false;
