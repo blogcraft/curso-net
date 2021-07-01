@@ -28,8 +28,8 @@ namespace web_api.Controllers
             return Created("", nombre);
         }
 
-        [HttpDelete]
-        public ActionResult BorrarCliente()
+        [HttpDelete("{id}")]
+        public ActionResult BorrarCliente(string id)
         {
             // validar y guardar en BD
             bool ocurrioAlgoMalo = false;
