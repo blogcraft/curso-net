@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using web_api.Model;
 
 namespace web_api.Controllers
 {
@@ -10,7 +11,12 @@ namespace web_api.Controllers
         [HttpGet]
         public ActionResult ObtenerClientes([FromQuery] int limite)
         {
-            string[] clientes = { "Juan", "Pepe", "Ana", "Francisca" };
+            Cliente[] clientes = {
+                new() { Nombre = "Juan", Apellicos = "Martinez", Direccion = "Calle A Nº 1234", Telefono = "+56 9 2728 1232"},
+                new() { Nombre = "Pepe", Apellicos = "Martinez", Direccion = "Calle B Nº 1243", Telefono = "+56 9 2827 1232"},
+                new() { Nombre = "Ana", Apellicos = "Martinez", Direccion = "Calle C Nº 1324", Telefono = "+56 9 2728 3212"},
+                new() { Nombre = "Francisca", Apellicos = "Martinez", Direccion = "Calle D Nº 1342", Telefono = "+56 9 2712 2832"}
+            };
 
             if (!clientes.Any())
                 return NotFound();
@@ -18,7 +24,7 @@ namespace web_api.Controllers
         }
 
         [HttpPost]
-        public ActionResult CrearCliente([FromBody] string nombre)
+        public ActionResult CrearCliente([FromBody] Cliente nombre)
         {
             // validar y guardar en BD
             bool ocurrioAlgoMalo = false;
