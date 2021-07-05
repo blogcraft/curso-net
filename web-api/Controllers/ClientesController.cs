@@ -56,6 +56,36 @@ namespace web_api.Controllers
             return CreatedAtAction("ObtenerCliente", new { id = cliente.ClienteId }, cliente);
         }
 
+        // PUT: api/Clientes/1
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ActualizarCliente(int id, Cliente cliente)
+        {
+            if (id != cliente.ClienteId)
+            {
+                return BadRequest();
+            }
+
+            _appdbContext.Entry(cliente).State = EntityState.Modified;
+
+            try
+            {
+                await _appdbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await ClienteExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // DELETE: api/Clientes/1
         [HttpDelete("{id}")]
         public async Task<ActionResult> BorrarCliente(int id)
@@ -72,5 +102,9 @@ namespace web_api.Controllers
             return NoContent();
         }
 
+        private async Task<bool> ClienteExists(int id)
+        {
+            return await _appdbContext.Cliente.AnyAsync(e => e.ClienteId == id);
+        }
     }
 }
