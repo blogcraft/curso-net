@@ -40,25 +40,35 @@ namespace web_api.Controllers
             return Ok(cliente);
         }
 
+        // POST: api/Clientes
         [HttpPost]
-        public ActionResult CrearCliente([FromBody] Cliente nombre)
+        public async Task<ActionResult> CrearCliente([FromBody] Cliente cliente)
         {
             // validar y guardar en BD
             bool ocurrioAlgoMalo = false;
 
             if (ocurrioAlgoMalo)
                 return BadRequest();
-            return Created("", nombre);
+
+            _appdbContext.Cliente.Add(cliente);
+            await _appdbContext.SaveChangesAsync();
+
+            return CreatedAtAction("ObtenerCliente", new { id = cliente.ClienteId }, cliente);
         }
 
+        // DELETE: api/Clientes/1
         [HttpDelete("{id}")]
-        public ActionResult BorrarCliente(string id)
+        public async Task<ActionResult> BorrarCliente(int id)
         {
-            // validar y guardar en BD
-            bool ocurrioAlgoMalo = false;
+            Cliente cliente = await _appdbContext.Cliente.FindAsync(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
 
-            if (ocurrioAlgoMalo)
-                return BadRequest();
+            _appdbContext.Cliente.Remove(cliente);
+            await _appdbContext.SaveChangesAsync();
+
             return NoContent();
         }
 
