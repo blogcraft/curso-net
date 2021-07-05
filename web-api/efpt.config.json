@@ -14,7 +14,23 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
+         "Name": "[dbo].[Cartera]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Cliente]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Cuenta]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Precio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Producto]",
          "ObjectType": 0
       }
    ],

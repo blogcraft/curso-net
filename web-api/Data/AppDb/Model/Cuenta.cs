@@ -9,29 +9,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace web_api.Data.AppDb.Model
 {
-    public partial class Cliente
+    public partial class Cuenta
     {
-        public Cliente()
+        public Cuenta()
         {
-            Cuenta = new HashSet<Cuenta>();
+            Cartera = new HashSet<Cartera>();
         }
 
         [Key]
-        public int ClienteId { get; set; }
+        public int CuentaId { get; set; }
         [Required]
         [StringLength(50)]
         public string Nombre { get; set; }
         [Required]
         [StringLength(50)]
-        public string Apellidos { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string Direccion { get; set; }
-        [Required]
-        [StringLength(20)]
-        public string Telefono { get; set; }
+        public string Numero { get; set; }
+        public int? ClienteId { get; set; }
 
-        [InverseProperty("Cliente")]
-        public virtual ICollection<Cuenta> Cuenta { get; set; }
+        [ForeignKey(nameof(ClienteId))]
+        [InverseProperty("Cuenta")]
+        public virtual Cliente Cliente { get; set; }
+        [InverseProperty("Cuenta")]
+        public virtual ICollection<Cartera> Cartera { get; set; }
     }
 }

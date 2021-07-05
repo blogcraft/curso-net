@@ -19,11 +19,28 @@ namespace web_api.Data.AppDb.Context
         {
         }
 
+        public virtual DbSet<Cartera> Cartera { get; set; }
         public virtual DbSet<Cliente> Cliente { get; set; }
+        public virtual DbSet<Cuenta> Cuenta { get; set; }
+        public virtual DbSet<Precio> Precio { get; set; }
+        public virtual DbSet<Producto> Producto { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Cartera>(entity =>
+            {
+                entity.HasOne(d => d.Cuenta)
+                    .WithMany(p => p.Cartera)
+                    .HasForeignKey(d => d.CuentaId)
+                    .HasConstraintName("FK__Cartera__CuentaI__398D8EEE");
+
+                entity.HasOne(d => d.Producto)
+                    .WithMany(p => p.Cartera)
+                    .HasForeignKey(d => d.ProductoId)
+                    .HasConstraintName("FK__Cartera__Product__3A81B327");
+            });
 
             modelBuilder.Entity<Cliente>(entity =>
             {
@@ -34,6 +51,31 @@ namespace web_api.Data.AppDb.Context
                 entity.Property(e => e.Nombre).IsUnicode(false);
 
                 entity.Property(e => e.Telefono).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Cuenta>(entity =>
+            {
+                entity.Property(e => e.Nombre).IsUnicode(false);
+
+                entity.Property(e => e.Numero).IsUnicode(false);
+
+                entity.HasOne(d => d.Cliente)
+                    .WithMany(p => p.Cuenta)
+                    .HasForeignKey(d => d.ClienteId)
+                    .HasConstraintName("FK__Cuenta__ClienteI__3B75D760");
+            });
+
+            modelBuilder.Entity<Precio>(entity =>
+            {
+                entity.HasOne(d => d.Producto)
+                    .WithMany(p => p.Precio)
+                    .HasForeignKey(d => d.ProductoId)
+                    .HasConstraintName("FK__Precio__Producto__3C69FB99");
+            });
+
+            modelBuilder.Entity<Producto>(entity =>
+            {
+                entity.Property(e => e.Nombre).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
