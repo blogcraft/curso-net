@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-using web_api.Model;
+using System.Threading.Tasks;
+using web_api.Data.AppDb.Context;
+using web_api.Data.AppDb.Model;
 
 namespace web_api.Controllers
 {
@@ -8,6 +12,12 @@ namespace web_api.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
+        private readonly AppdbContext _appdbContext;
+        public ClientesController(AppdbContext appdbContext)
+        {
+            _appdbContext = appdbContext;
+        }
+
         [HttpGet]
         public ActionResult ObtenerClientes([FromQuery] int limite)
         {
