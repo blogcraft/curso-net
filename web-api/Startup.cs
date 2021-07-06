@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using web_api.Data.AppDb.Context;
+using web_api.Services;
 
 namespace web_api
 {
@@ -23,6 +24,8 @@ namespace web_api
         {
             services.AddDbContext<AppdbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("BasedatosConnection")));
+
+            services.AddScoped<IClienteService, ClienteService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
