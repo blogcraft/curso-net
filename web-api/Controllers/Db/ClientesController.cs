@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using web_api.Data.AppDb.Context;
 using web_api.Data.AppDb.Model;
 
-namespace web_api.Controllers
+namespace web_api.Controllers.Db
 {
-    [Route("api/[controller]")]
+    [Route("api/db/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase
     {
