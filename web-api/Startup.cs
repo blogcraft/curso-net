@@ -26,6 +26,7 @@ namespace web_api
                 options => options.UseSqlServer(Configuration.GetConnectionString("BasedatosConnection")));
 
             services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<ICarteraService, CarteraService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
