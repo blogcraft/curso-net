@@ -27,6 +27,7 @@ namespace web_api
 
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<ICarteraService, CarteraService>();
+            services.AddSingleton<ICalculoService, CalculoService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
