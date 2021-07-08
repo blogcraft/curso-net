@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using web_api.Data.AppDb.Context;
+using web_api.Data.AuthDb.Context;
 using web_api.Services;
 
 namespace web_api
@@ -24,6 +25,9 @@ namespace web_api
         {
             services.AddDbContext<AppdbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("BasedatosConnection")));
+
+            services.AddDbContext<AuthDbContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("BaseAuthConnection")));
 
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<ICarteraService, CarteraService>();
