@@ -1,5 +1,7 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +35,24 @@ namespace web_api
             services.AddScoped<ICarteraService, CarteraService>();
             services.AddSingleton<ICalculoService, CalculoService>();
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AuthDbContext>();
+
+            services.Configure<IdentityOptions>(options =>
+                {
+                    // Contraseñas
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 10;
+                    options.Password.RequireNonAlphanumeric = false;
+
+                    // Tipo Fuera
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                    options.Lockout.MaxFailedAccessAttempts = 10;
+
+                    // Usuario
+                    options.User.RequireUniqueEmail = true;
+                });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -54,6 +74,7 @@ namespace web_api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
