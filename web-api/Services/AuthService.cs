@@ -1,25 +1,32 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace web_api.Services
 {
     public interface IAuthService
     {
-        Task<bool> SignIn(LoginParameters param);
+        Task<string> SignIn(LoginParameters param);
     }
     public class AuthService : IAuthService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly IConfiguration _configuration;
+        public AuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+        IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
-        public async Task<bool> SignIn(LoginParameters param)
+        public async Task<string> SignIn(LoginParameters param)
         {
             if (param.UserName == null)
             {
@@ -41,7 +48,7 @@ namespace web_api.Services
             SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, param.Password, true);
             if (result.Succeeded)
             {
-                return true;
+                return await GenerarTokenAsync(user);
             }
             else
             {
@@ -50,6 +57,29 @@ namespace web_api.Services
 
         }
 
+        public async Task<string> GenerarTokenAsync(IdentityUser user)
+        {
+            var cl = await _userManager.GetClaimsAsync(user);
+            cl.Add(new Claim(ClaimTypes.Name, user.UserName));
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                cl.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(cl),
+                NotBefore = DateTime.Now.Subtract(TimeSpan.FromMinutes(20)),
+                Expires = DateTime.Now.AddMinutes(20),
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            };
+
+            var token = handler.CreateToken(tokenDescriptor);
+            return handler.WriteToken(token);
+        }
     }
 
     public class LoginParameters
