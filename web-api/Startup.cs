@@ -34,6 +34,7 @@ namespace web_api
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<ICarteraService, CarteraService>();
             services.AddSingleton<ICalculoService, CalculoService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>();
