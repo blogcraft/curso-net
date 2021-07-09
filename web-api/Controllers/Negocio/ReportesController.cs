@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Data.AppDb.Model;
 using web_api.Services;
@@ -8,6 +9,7 @@ namespace web_api.Controllers.Negocio
 {
     [Route("api/negocio/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReportesController : ControllerBase
     {
         private readonly ICarteraService _carteraService;

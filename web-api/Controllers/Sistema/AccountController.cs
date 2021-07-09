@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Services;
@@ -8,6 +9,7 @@ namespace web_api.Controllers.Sistema
 {
     [Route("api/sistema/[controller]")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -16,6 +18,7 @@ namespace web_api.Controllers.Sistema
             _accountService = accountService;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost("SignUpAdministrador")]
         public async Task<IActionResult> SignUpAdministrador([FromBody] SignUpParameters param)
         {
