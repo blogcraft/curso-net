@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using web_api.Data.AppDb.Context;
 using web_api.Data.AuthDb.Context;
@@ -40,7 +43,24 @@ namespace web_api
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>();
 
-            services.AddAuthentication();
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; // Leer Data Token
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Sin este no tira 401
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.Configure<IdentityOptions>(options =>
                 {
