@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Services;
 
@@ -6,6 +8,7 @@ namespace web_api.Controllers.Sistema
 {
     [Route("api/sistema/[controller]")]
     [ApiController]
+    [Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -14,6 +17,8 @@ namespace web_api.Controllers.Sistema
             _authService = authService;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [AllowAnonymous]
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] LoginParameters param)
         {
