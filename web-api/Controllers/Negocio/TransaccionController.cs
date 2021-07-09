@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Services;
 
@@ -7,6 +8,7 @@ namespace web_api.Controllers.Negocio
 {
     [Route("api/negocio/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrador")]
     public class TransaccionController : ControllerBase
     {
         private readonly ITransaccionService _transaccionService;

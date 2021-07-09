@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace web_api.Controllers.Db
 {
     [Route("api/db/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClientesController : ControllerBase
     {
         private readonly AppdbContext _appdbContext;
@@ -41,6 +43,7 @@ namespace web_api.Controllers.Db
         }
 
         // POST: api/Clientes
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<ActionResult> CrearCliente([FromBody] Cliente cliente)
         {
@@ -57,6 +60,7 @@ namespace web_api.Controllers.Db
         }
 
         // PUT: api/Clientes/1
+        [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarCliente(int id, Cliente cliente)
         {
@@ -87,6 +91,7 @@ namespace web_api.Controllers.Db
         }
 
         // DELETE: api/Clientes/1
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> BorrarCliente(int id)
         {
