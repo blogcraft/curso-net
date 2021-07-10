@@ -1,11 +1,13 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace web_api.Controllers.Sistema
 {
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("api/sistema/[controller]")]
     [ApiController]
     [Authorize]
@@ -17,6 +19,7 @@ namespace web_api.Controllers.Sistema
             _userManager = userManager;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<IActionResult> QuienSoyAsync()
         {
