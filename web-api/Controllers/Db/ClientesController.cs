@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,7 @@ using web_api.Data.AppDb.Model;
 
 namespace web_api.Controllers.Db
 {
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("api/db/[controller]")]
     [ApiController]
     [Authorize]
@@ -22,6 +24,8 @@ namespace web_api.Controllers.Db
         }
 
         // GET: api/Clientes
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
         public async Task<ActionResult> ObtenerClientes([FromQuery] int limite)
         {
@@ -36,6 +40,8 @@ namespace web_api.Controllers.Db
         }
 
         // GET: api/Clientes/1
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult> ObtenerCliente(int id)
         {
@@ -47,6 +53,8 @@ namespace web_api.Controllers.Db
         }
 
         // POST: api/Clientes
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<ActionResult> CrearCliente([FromBody] Cliente cliente)
@@ -64,6 +72,9 @@ namespace web_api.Controllers.Db
         }
 
         // PUT: api/Clientes/1
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarCliente(int id, Cliente cliente)
@@ -95,6 +106,8 @@ namespace web_api.Controllers.Db
         }
 
         // DELETE: api/Clientes/1
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> BorrarCliente(int id)
