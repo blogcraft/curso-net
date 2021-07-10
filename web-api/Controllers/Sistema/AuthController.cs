@@ -6,6 +6,7 @@ using web_api.Services;
 
 namespace web_api.Controllers.Sistema
 {
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("api/sistema/[controller]")]
     [ApiController]
     [Authorize]
@@ -23,7 +24,14 @@ namespace web_api.Controllers.Sistema
         public async Task<IActionResult> SignIn([FromBody] LoginParameters param)
         {
             string result = await _authService.SignIn(param);
-            return Ok(result);
+            if (result == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok(result);
+            }
         }
     }
 }

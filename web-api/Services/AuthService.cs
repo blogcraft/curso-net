@@ -42,7 +42,7 @@ namespace web_api.Services
             IdentityUser user = await _userManager.FindByNameAsync(param.UserName);
             if (user == null)
             {
-                throw new Exception("Usuario o contraseña invalida");
+                return null;
             }
 
             SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, param.Password, true);
@@ -52,7 +52,7 @@ namespace web_api.Services
             }
             else
             {
-                throw new Exception("Usuario o contraseña invalida");
+                return null;
             }
 
         }
