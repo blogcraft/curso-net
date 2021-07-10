@@ -9,6 +9,10 @@
             "path": "web-api"
         },
         {
+            "name": "Client",
+            "path": "cliente-cli"
+        },
+        {
             "name": "Root",
             "path": "."
         }
