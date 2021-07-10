@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +25,9 @@ namespace web_api.Controllers.Db
         [HttpGet]
         public async Task<ActionResult> ObtenerClientes([FromQuery] int limite)
         {
+            if (limite <= 0)
+                throw new ArgumentException("limite invalido", nameof(limite));
+
             List<Cliente> clientes = await _appdbContext.Cliente.ToListAsync();
 
             if (!clientes.Any())
