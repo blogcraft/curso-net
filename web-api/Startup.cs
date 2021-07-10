@@ -89,9 +89,13 @@ namespace web_api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error-debug");
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "web_api v1"));
+            }
+            else
+            {
+                app.UseExceptionHandler("/error-debug");
             }
 
             app.UseHttpsRedirection();
