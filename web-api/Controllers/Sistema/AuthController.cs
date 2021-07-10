@@ -18,7 +18,8 @@ namespace web_api.Controllers.Sistema
             _authService = authService;
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [AllowAnonymous]
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] LoginParameters param)

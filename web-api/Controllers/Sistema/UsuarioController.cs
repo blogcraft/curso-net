@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace web_api.Controllers.Sistema
 {
+    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("api/sistema/[controller]")]
     [ApiController]
@@ -19,7 +20,7 @@ namespace web_api.Controllers.Sistema
             _userManager = userManager;
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IdentityUser), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<IActionResult> QuienSoyAsync()
         {
